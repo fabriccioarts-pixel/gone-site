@@ -873,7 +873,7 @@ function App() {
           transition={{ duration: 1 }}
           viewport={{ once: true }}
         >
-          <div className="card-inner" style={{ padding: '2rem 1.5rem', textAlign: 'center', background: '#fff', borderBottom: 'none' }}>
+          <div className="card-inner" style={{ padding: '2rem 1.5rem', textAlign: 'center', background: '#fcfffe', borderBottom: 'none' }}>
             <video 
               autoPlay 
               loop 
@@ -900,7 +900,7 @@ function App() {
           transition={{ duration: 1 }}
           viewport={{ once: true }}
         >
-          <div className="card-inner" style={{ minHeight: '360px', background: '#fff', display: 'block', padding: 0 }}>
+          <div className="card-inner" style={{ minHeight: '360px', background: '#fcfffe', display: 'block', padding: 0 }}>
             <GrowthSystem />
           </div>
         </motion.div>
@@ -995,7 +995,7 @@ function App() {
           transition={{ duration: 1 }}
           viewport={{ once: true }}
         >
-          <div className="card-inner" style={{ padding: '3rem 0', background: '#fff', display: 'block', overflow: 'hidden' }}>
+          <div className="card-inner" style={{ padding: '3rem 0', background: 'rgb(252, 252, 252)', display: 'block', overflow: 'hidden' }}>
             <div style={{ textAlign: 'center', padding: '0 1.5rem' }}>
               <video 
                 autoPlay 
