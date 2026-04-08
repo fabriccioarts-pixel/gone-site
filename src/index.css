@@ -457,7 +457,7 @@ h3 {
   width: 80px;
   height: 80px;
   background: var(--primary);
-  border-radius: 50%;
+  border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -587,7 +587,7 @@ h3 {
   height: 12px;
   background: var(--primary);
   border: 3px solid #fff;
-  border-radius: 50%;
+  border-radius: 100px;
   margin-bottom: 10px;
   position: relative;
 }
@@ -597,7 +597,7 @@ h3 {
   position: absolute;
   inset: -8px;
   background: var(--primary);
-  border-radius: 50%;
+  border-radius: 100px;
   opacity: 0.3;
   animation: pulseMilestone 2s infinite;
 }
@@ -668,7 +668,7 @@ h3 {
   width: 8px;
   height: 8px;
   background: #10b981;
-  border-radius: 50%;
+  border-radius: 100px;
   animation: pulseGreen 2.5s infinite;
 }
 
@@ -833,7 +833,7 @@ h3 {
 .dot {
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: 100px;
 }
 
 .dot.red {
@@ -957,7 +957,7 @@ h3 {
 .item-avatar img {
   width: 24px;
   height: 24px;
-  border-radius: 50%;
+  border-radius: 100px;
   border: 1px solid #e2e8f0;
 }
 
@@ -981,7 +981,7 @@ h3 {
 .avatar-group img {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: 100px;
   border: 2px solid #fff;
   margin-left: -8px;
 }
@@ -1701,7 +1701,7 @@ h3 {
   border: none;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1794,7 +1794,7 @@ select:focus {
   width: 60px;
   height: 60px;
   background: #25D366;
-  border-radius: 50%;
+  border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2942,7 +2942,7 @@ select:focus {
 
 .orbital-ring {
   position: absolute;
-  border-radius: 50%;
+  border-radius: 100px;
   border: 1px dashed rgba(224, 55, 32, 0.25);
 }
 
@@ -2951,7 +2951,7 @@ select:focus {
   width: 6px;
   height: 6px;
   background: #E03720;
-  border-radius: 50%;
+  border-radius: 100px;
   box-shadow: 0 0 12px #E03720;
 }
 
@@ -2959,5 +2959,79 @@ select:focus {
 /* Move orbital system on top of the image */
 .orbital-wrapper.foreground {
   z-index: 2 !important;
+}
+
+
+/* Branding Badges Styles */
+.branding-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 100px;
+  border: 1px solid rgba(224, 55, 32, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  z-index: 5;
+  white-space: nowrap;
+}
+
+.badge-icon {
+  color: #E03720;
+  display: flex;
+  align-items: center;
+}
+
+.badge-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #111;
+}
+
+
+/* Discreto Variant for Branding Badges */
+.branding-badge.discreto {
+  background: #ffffff;
+  backdrop-filter: blur(4px);
+  padding: 4px 10px;
+  border: 1px solid #e2e8f0;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.branding-badge.discreto .badge-icon,
+.branding-badge.discreto .badge-text {
+  opacity: 1;
+  font-size: 0.7rem;
+}
+
+
+/* Minimal Branding Icons Styles */
+.minimal-badge {
+  padding: 4px 12px;
+  
+  background: #ffffff;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border: 1px solid #f1f5f9;
+  color: #E03720;
+  position: absolute;
+}
+
+
+.orbital-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 100px;
+  pointer-events: none;
 }
 

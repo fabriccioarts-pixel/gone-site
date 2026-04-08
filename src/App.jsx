@@ -29,7 +29,11 @@ import {
   Truck,
   Utensils,
   MousePointer2,
-  ShoppingBag
+  ShoppingBag,
+  Palette,
+  Type,
+  Sparkles,
+  Fingerprint
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DitheringShader } from '@/components/ui/dithering-shader';
@@ -447,84 +451,115 @@ const FAQ = () => {
   );
 };
 
-const StarsBackground = () => {
+const MinimalBrandingSystem = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const items = [
+    { label: "Cores", radius: isMobile ? 80 : 140, duration: 45, startAngle: 0 },
+    { label: "Tipografia", radius: isMobile ? 130 : 260, duration: 65, startAngle: 72 },
+    { label: "Essência", radius: isMobile ? 110 : 200, duration: 55, startAngle: 144 },
+    { label: "Arquétipo", radius: isMobile ? 160 : 380, duration: 85, startAngle: 216 },
+    { label: "Estratégia", radius: isMobile ? 140 : 320, duration: 75, startAngle: 288 }
+  ];
+
+  const ringRadii = isMobile 
+    ? [80, 110, 140, 170, 200] 
+    : [80, 110, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440];
+
   return (
-    <div className="orbital-wrapper" style={{ opacity: 0.4 }}>
-      {[...Array(20)].map((_, i) => (
-        <div
-          key={i}
-          className="orbital-node"
+    <div 
+      className="orbital-wrapper" 
+      style={{ 
+        zIndex: 0,
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 150px, black calc(100% - 150px), transparent)',
+        maskImage: 'linear-gradient(to bottom, transparent, black 150px, black calc(100% - 150px), transparent)'
+      }}
+    >
+      {ringRadii.map((radius, i) => (
+        <motion.div
+          key={radius}
+          className="orbital-ring"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.25 }}
+          transition={{
+            duration: 0.6,
+            delay: i * 0.08,
+            ease: [0.34, 1.56, 0.64, 1]
+          }}
           style={{
-            width: Math.random() * 3 + 1,
-            height: Math.random() * 3 + 1,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            opacity: Math.random(),
-            scale: Math.random() * 0.5 + 0.5
+            width: radius * 2,
+            height: radius * 2,
+            borderStyle: 'solid',
+            borderWidth: '1px',
+            borderColor: '#94A3B8'
           }}
         />
+      ))}
+      
+      {items.map((item, idx) => (
+        <motion.div
+          key={idx}
+          style={{
+            position: 'absolute',
+            width: item.radius * 2,
+            height: item.radius * 2,
+            left: '50%',
+            top: '50%',
+            marginLeft: -item.radius,
+            marginTop: -item.radius,
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            pointerEvents: 'none'
+          }}
+          animate={{ rotate: [0, 360] }}
+          transition={{
+            duration: item.duration,
+            repeat: Infinity,
+            ease: "linear",
+            delay: -((item.startAngle / 360) * item.duration)
+          }}
+        >
+          <motion.div
+            className="minimal-badge"
+            style={{ 
+              fontSize: '10px', 
+              fontWeight: 500, 
+              color: '#475569',
+              letterSpacing: '0.01em',
+              padding: '4px 14px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              borderRadius: '100px',
+              /* Firecrawl-style gap effect */
+              boxShadow: '0 0 0 6px #FFFFFF',
+              whiteSpace: 'nowrap',
+              pointerEvents: 'auto'
+            }}
+            animate={{ rotate: [0, -360] }}
+            transition={{
+              duration: item.duration,
+              repeat: Infinity,
+              ease: "linear",
+              delay: -((item.startAngle / 360) * item.duration)
+            }}
+          >
+            {item.label}
+          </motion.div>
+        </motion.div>
       ))}
     </div>
   );
 };
 
-const OrbitalSystem = () => {
-  return (
-    <div className="orbital-wrapper">
-      {[2.8, 3.8].map((ring) => (
-        <motion.div
-          key={ring}
-          className="orbital-ring"
-          style={{
-            width: ring * 100,
-            height: ring * 100,
-          }}
-          animate={{ rotate: 360 }}
-          transition={{
-            duration: ring * 10 + 10,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        >
-          <motion.div 
-            className="orbital-node"
-            style={{
-              top: 0,
-              left: '50%',
-              marginLeft: -3
-            }}
-          />
-        </motion.div>
-      ))}
-      {[3.3].map((ring, i) => (
-        <motion.div
-          key={`rev-${i}`}
-          className="orbital-ring"
-          style={{
-            width: ring * 100,
-            height: ring * 100,
-          }}
-          animate={{ rotate: -360 }}
-          transition={{
-            duration: ring * 15 + 10,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        >
-          <motion.div 
-            className="orbital-node"
-            style={{
-              bottom: 0,
-              left: '50%',
-              marginLeft: -3,
-              backgroundColor: '#ffa394'
-            }}
-          />
-        </motion.div>
-      ))}
-    </div>
-  );
-};
+
 
 const CartAnimationBadge = () => {
   return (
@@ -606,12 +641,7 @@ const FileExplorerServices = () => {
           const isBranding = service.title === "Identidade & Branding";
           return (
             <div key={`top-${idx}`} className={`service-clean-card${service.lava ? ' lava-card' : ''}`}>
-              {isBranding && (
-                <>
-                  <StarsBackground />
-                  <OrbitalSystem />
-                </>
-              )}
+              {isBranding && <MinimalBrandingSystem />}
               {service.lava && (
               <AnimatedGradient config={{
                 preset: 'custom',
@@ -663,8 +693,17 @@ const FileExplorerServices = () => {
                 alt={service.title} 
                 className="service-card-image"
                 style={isBranding ? { position: 'relative', zIndex: 1 } : {}}
-                animate={isBranding ? { rotate: 360 } : {}}
-                transition={isBranding ? { duration: 40, repeat: Infinity, ease: "linear" } : {}}
+                initial={isBranding ? { scale: 0, opacity: 0 } : {}}
+                animate={isBranding ? { 
+                  rotate: 360,
+                  scale: [0, 1.1, 1],
+                  opacity: 1
+                } : {}}
+                transition={isBranding ? {
+                  rotate: { duration: 40, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 1, delay: 1.2, ease: [0.34, 1.56, 0.64, 1] },
+                  opacity: { duration: 0.5, delay: 1.2 }
+                } : {}}
               />
             )}
             <p style={service.lava || isBranding ? { position: 'relative', zIndex: 1 } : {}}>{service.desc}</p>
