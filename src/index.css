@@ -2927,3 +2927,37 @@ select:focus {
   }
 }
 
+
+/* Orbital System Styles */
+.orbital-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orbital-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(224, 55, 32, 0.25);
+}
+
+.orbital-node {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #E03720;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #E03720;
+}
+
+
+/* Move orbital system on top of the image */
+.orbital-wrapper.foreground {
+  z-index: 2 !important;
+}
+

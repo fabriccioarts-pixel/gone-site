@@ -447,6 +447,85 @@ const FAQ = () => {
   );
 };
 
+const StarsBackground = () => {
+  return (
+    <div className="orbital-wrapper" style={{ opacity: 0.4 }}>
+      {[...Array(20)].map((_, i) => (
+        <div
+          key={i}
+          className="orbital-node"
+          style={{
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            opacity: Math.random(),
+            scale: Math.random() * 0.5 + 0.5
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const OrbitalSystem = () => {
+  return (
+    <div className="orbital-wrapper">
+      {[2.8, 3.8].map((ring) => (
+        <motion.div
+          key={ring}
+          className="orbital-ring"
+          style={{
+            width: ring * 100,
+            height: ring * 100,
+          }}
+          animate={{ rotate: 360 }}
+          transition={{
+            duration: ring * 10 + 10,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        >
+          <motion.div 
+            className="orbital-node"
+            style={{
+              top: 0,
+              left: '50%',
+              marginLeft: -3
+            }}
+          />
+        </motion.div>
+      ))}
+      {[3.3].map((ring, i) => (
+        <motion.div
+          key={`rev-${i}`}
+          className="orbital-ring"
+          style={{
+            width: ring * 100,
+            height: ring * 100,
+          }}
+          animate={{ rotate: -360 }}
+          transition={{
+            duration: ring * 15 + 10,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        >
+          <motion.div 
+            className="orbital-node"
+            style={{
+              bottom: 0,
+              left: '50%',
+              marginLeft: -3,
+              backgroundColor: '#ffa394'
+            }}
+          />
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 const CartAnimationBadge = () => {
   return (
     <div className="cart-badge-container">
@@ -523,9 +602,17 @@ const FileExplorerServices = () => {
   return (
     <div className="services-clean-container">
       <div className="services-grid-top">
-        {services.slice(0, 3).map((service, idx) => (
-          <div key={`top-${idx}`} className={`service-clean-card${service.lava ? ' lava-card' : ''}`}>
-            {service.lava && (
+        {services.slice(0, 3).map((service, idx) => {
+          const isBranding = service.title === "Identidade & Branding";
+          return (
+            <div key={`top-${idx}`} className={`service-clean-card${service.lava ? ' lava-card' : ''}`}>
+              {isBranding && (
+                <>
+                  <StarsBackground />
+                  <OrbitalSystem />
+                </>
+              )}
+              {service.lava && (
               <AnimatedGradient config={{
                 preset: 'custom',
                 color1: '#fae1de',
@@ -544,7 +631,7 @@ const FileExplorerServices = () => {
                 shapeSize: 12,
               }} pixelSize={2} ditherType="4x4" style={{ zIndex: 0 }} />
             )}
-            <h4 style={service.lava ? { position: 'relative', zIndex: 1 } : {}}>{service.title}</h4>
+            <h4 style={service.lava || isBranding ? { position: 'relative', zIndex: 1 } : {}}>{service.title}</h4>
             
             {service.lava && <CartAnimationBadge />}
             
@@ -571,15 +658,19 @@ const FileExplorerServices = () => {
             )}
             
             {service.image && (
-              <img 
+              <motion.img 
                 src={service.image} 
                 alt={service.title} 
                 className="service-card-image"
+                style={isBranding ? { position: 'relative', zIndex: 1 } : {}}
+                animate={isBranding ? { rotate: 360 } : {}}
+                transition={isBranding ? { duration: 40, repeat: Infinity, ease: "linear" } : {}}
               />
             )}
-            <p style={service.lava ? { position: 'relative', zIndex: 1 } : {}}>{service.desc}</p>
+            <p style={service.lava || isBranding ? { position: 'relative', zIndex: 1 } : {}}>{service.desc}</p>
           </div>
-        ))}
+        );
+      })}
       </div>
       <div className="services-grid-bottom">
         {services.slice(3, 5).map((service, idx) => {
