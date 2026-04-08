@@ -27,10 +27,13 @@ import {
   UtensilsCrossed,
   Clock,
   Truck,
-  Utensils
+  Utensils,
+  MousePointer2,
+  ShoppingBag
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DitheringShader } from '@/components/ui/dithering-shader';
+import AnimatedGradient from '@/components/ui/animated-gradient';
 
 const GrowthSystem = () => {
   const [activePhrase, setActivePhrase] = useState(0);
@@ -444,27 +447,76 @@ const FAQ = () => {
   );
 };
 
+const CartAnimationBadge = () => {
+  return (
+    <div className="cart-badge-container">
+      <div className="cart-badge-item">
+        <div className="item-info">
+          <span className="name">Double Cheese Burger</span>
+          <span className="price">R$ 38,90</span>
+        </div>
+        <motion.button 
+          className="add-btn"
+          animate={{ scale: [1, 0.94, 1] }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 2.5, 
+            times: [0, 0.45, 0.55],
+            delay: 1.2
+          }}
+        >
+          <ShoppingBag size={14} /> Adicionar
+        </motion.button>
+      </div>
+      
+      <motion.div 
+        className="cursor-container"
+        initial={{ x: 100, y: 100, opacity: 0 }}
+        animate={{ 
+          x: [100, 20, 20, 100], 
+          y: [100, 15, 15, 100],
+          opacity: [0, 1, 1, 0],
+          scale: [1, 1, 0.85, 1]
+        }}
+        transition={{ 
+          repeat: Infinity, 
+          duration: 2.5,
+          times: [0, 0.35, 0.55, 0.8],
+          delay: 0.5
+        }}
+      >
+        <MousePointer2 size={22} className="cursor-icon" fill="white" />
+      </motion.div>
+    </div>
+  );
+};
+
 const FileExplorerServices = () => {
   const services = [
     {
       title: "Sites de Conversão",
-      desc: "Plataformas rápidas e otimizadas que convertem visitantes em clientes 24/7."
+      desc: "Plataformas rápidas e otimizadas que convertem visitantes em clientes 24/7.",
+      lava: true
     },
     {
       title: "SEO Estratégico",
-      desc: "Posicionamento no topo das buscas locais para atrair clientes prontos para comprar."
+      desc: "Posicionamento no topo das buscas locais para atrair clientes prontos para comprar.",
+      video: "/lupa 360° looping.mp4"
     },
     {
       title: "Identidade & Branding",
-      desc: "Design premium que gera desejo e aumenta o valor percebido do seu negócio."
+      desc: "Design premium que gera desejo e aumenta o valor percebido do seu negócio.",
+      image: "/selo-gone.png"
     },
     {
       title: "Tráfego & Escala",
-      desc: "Anúncios precisos no Google e Meta focados em lucro e previsibilidade."
+      desc: <>Anúncios precisos no Google e Meta <br className="desktop-only" /> focados em lucro e previsibilidade.</>,
+      video: "/a-clay-render-terracotta-funnel-centered-on-pure-b.mp4"
     },
     {
-      title: "Engenharia de Cardápio",
-      desc: "Otimização estratégica da oferta para maximizar a margem de lucro em cada pedido."
+      title: <>Engenharia de <br className="desktop-only" /> Cardápio</>,
+      desc: <>Otimização estratégica da oferta <br className="desktop-only" /> para maximizar a margem de lucro em cada pedido.</>,
+      image: "/bird-menu.png"
     }
   ];
 
@@ -472,19 +524,91 @@ const FileExplorerServices = () => {
     <div className="services-clean-container">
       <div className="services-grid-top">
         {services.slice(0, 3).map((service, idx) => (
-          <div key={`top-${idx}`} className="service-clean-card">
-            <h4>{service.title}</h4>
-            <p>{service.desc}</p>
+          <div key={`top-${idx}`} className={`service-clean-card${service.lava ? ' lava-card' : ''}`}>
+            {service.lava && (
+              <AnimatedGradient config={{
+                preset: 'custom',
+                color1: '#fae1de',
+                color2: '#fae1de',
+                color3: '#FFFFFF',
+                rotation: 114,
+                proportion: 100,
+                scale: 0.52,
+                speed: 30,
+                distortion: 7,
+                swirl: 18,
+                swirlIterations: 20,
+                softness: 1,
+                offset: 717,
+                shape: 'Edge',
+                shapeSize: 12,
+              }} pixelSize={2} ditherType="4x4" style={{ zIndex: 0 }} />
+            )}
+            <h4 style={service.lava ? { position: 'relative', zIndex: 1 } : {}}>{service.title}</h4>
+            
+            {service.lava && <CartAnimationBadge />}
+            
+            {service.video && (
+              <div className="video-container-relative">
+                {service.title === "SEO Estratégico" && (
+                  <div className="search-badge-animation">
+                    <div className="search-badge-inner">
+                      <Search size={14} />
+                      <span>Restaurante perto de mim</span>
+                    </div>
+                  </div>
+                )}
+                <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="service-card-video"
+                >
+                  <source src={service.video} type="video/mp4" />
+                </video>
+              </div>
+            )}
+            
+            {service.image && (
+              <img 
+                src={service.image} 
+                alt={service.title} 
+                className="service-card-image"
+              />
+            )}
+            <p style={service.lava ? { position: 'relative', zIndex: 1 } : {}}>{service.desc}</p>
           </div>
         ))}
       </div>
       <div className="services-grid-bottom">
-        {services.slice(3, 5).map((service, idx) => (
-          <div key={`bot-${idx}`} className="service-clean-card">
-            <h4>{service.title}</h4>
-            <p>{service.desc}</p>
-          </div>
-        ))}
+        {services.slice(3, 5).map((service, idx) => {
+          const isSpecial = service.title === "Tráfego & Escala" || service.title === "Engenharia de Cardápio";
+          return (
+            <div key={`bot-${idx}`} className={`service-clean-card${isSpecial ? ' traffic-card' : ''}`}>
+              <h4 style={{ position: 'relative', zIndex: 1 }}>{service.title}</h4>
+              {service.video && (
+                <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className={`service-card-video${isSpecial ? ' traffic-video' : ''}`}
+                >
+                  <source src={service.video} type="video/mp4" />
+                </video>
+              )}
+              {service.image && (
+                <img 
+                  src={service.image} 
+                  alt={service.title} 
+                  className={`service-card-image${isSpecial ? ' traffic-video' : ''}${service.title === "Engenharia de Cardápio" ? " bird-image" : ""}`}
+                />
+              )}
+              <p style={{ position: 'relative', zIndex: 1 }}>{service.desc}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
