@@ -286,7 +286,7 @@ const RestaurantOptimization = () => {
       <div className="strategy-column" style={{ width: '100%', maxWidth: '480px', alignItems: 'center' }}>
         {/* Strategy Metrics Panel Combined with Chart */}
         <div className="strategy-panel glass v3" style={{ maxWidth: '100%', overflow: 'hidden', padding: 0, display: 'flex', flexDirection: 'column' }}>
-          
+
           <div style={{ padding: '2.5rem 2.5rem 0 2.5rem', position: 'relative', zIndex: 10, width: '100%' }}>
             <div className="panel-status-row">
               <div className="status-dot"></div>
@@ -384,28 +384,42 @@ const LeadQualification = () => {
     <div className="qualification-container">
       <div className="qual-header">
         <span className="tag-pill">Por que nos escolher</span>
-        <h2>Quando a GONE® <br /><span>faz total sentido.</span></h2>
-        <p>Escalar faturamento exige técnica, dados e processos claros. <br className="desktop-only" />Se você se identifica com os pontos abaixo, estamos prontos para acelerar.</p>
+        <h2>Quando escolher a Gone, <span>faz total sentido.</span></h2>
+        <p><strong>Escalar faturamento exige técnica, dados e processos claros.</strong><br className="desktop-only" />Se você se identifica com os pontos abaixo, estamos prontos para acelerar.</p>
       </div>
 
       <div className="qual-grid">
-        <div className="qual-card">
-          <span className="qual-num">01</span>
-          <h3>Faturamento</h3>
-          <p className="qual-main">Seu restaurante já fatura acima de R$ 30k e você busca o próximo nível de escala.</p>
-          <p className="qual-footer">Faz sentido quando você entende que faturar mais exige investimento estratégico e dados.</p>
+        <div className="qual-item">
+          <div className="qual-title-card">
+            <span className="qual-num">01</span>
+            <h3>Faturamento</h3>
+          </div>
+          <div className="qual-info-card">
+            <p className="qual-main">Seu restaurante já fatura acima de R$ 30k e você busca o próximo nível de escala.</p>
+            <p className="qual-footer">Faz sentido quando você entende que faturar mais exige investimento estratégico e dados.</p>
+          </div>
         </div>
-        <div className="qual-card">
-          <span className="qual-num">02</span>
-          <h3>Mentalidade</h3>
-          <p className="qual-main">Você entende que o digital não é 'postzinho', mas o principal canal de vendas do bairro.</p>
-          <p className="qual-footer">Faz sentido quando você busca uma assessoria focada em ROI, não apenas em curtidas.</p>
+
+        <div className="qual-item">
+          <div className="qual-title-card">
+            <span className="qual-num">02</span>
+            <h3>Mentalidade</h3>
+          </div>
+          <div className="qual-info-card">
+            <p className="qual-main">Você entende que o digital não é 'postzinho', mas o principal canal de vendas do bairro.</p>
+            <p className="qual-footer">Faz sentido quando você busca uma assessoria focada em ROI, não apenas em curtidas.</p>
+          </div>
         </div>
-        <div className="qual-card">
-          <span className="qual-num">03</span>
-          <h3>Operação</h3>
-          <p className="qual-main">Sua cozinha está pronta para o volume, mas o funil de vendas digital está travado.</p>
-          <p className="qual-footer">Faz sentido quando o gargalo do negócio não é a produção, mas a aquisição de novos clientes.</p>
+
+        <div className="qual-item">
+          <div className="qual-title-card">
+            <span className="qual-num">03</span>
+            <h3>Operação</h3>
+          </div>
+          <div className="qual-info-card">
+            <p className="qual-main">Sua cozinha está pronta para o volume, mas o funil de vendas digital está travado.</p>
+            <p className="qual-footer">Faz sentido quando o gargalo do negócio não é a produção, mas a aquisição de novos clientes.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -469,14 +483,14 @@ const MinimalBrandingSystem = () => {
     { label: "Estratégia", radius: isMobile ? 140 : 320, duration: 75, startAngle: 288 }
   ];
 
-  const ringRadii = isMobile 
-    ? [80, 110, 140, 170, 200] 
+  const ringRadii = isMobile
+    ? [80, 110, 140, 170, 200]
     : [80, 110, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440];
 
   return (
-    <div 
-      className="orbital-wrapper" 
-      style={{ 
+    <div
+      className="orbital-wrapper"
+      style={{
         zIndex: 0,
         WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 150px, black calc(100% - 150px), transparent)',
         maskImage: 'linear-gradient(to bottom, transparent, black 150px, black calc(100% - 150px), transparent)'
@@ -502,7 +516,7 @@ const MinimalBrandingSystem = () => {
           }}
         />
       ))}
-      
+
       {items.map((item, idx) => (
         <motion.div
           key={idx}
@@ -529,9 +543,9 @@ const MinimalBrandingSystem = () => {
         >
           <motion.div
             className="minimal-badge"
-            style={{ 
-              fontSize: '10px', 
-              fontWeight: 500, 
+            style={{
+              fontSize: '10px',
+              fontWeight: 500,
               color: '#475569',
               letterSpacing: '0.01em',
               padding: '4px 14px',
@@ -569,12 +583,12 @@ const CartAnimationBadge = () => {
           <span className="name">Double Cheese Burger</span>
           <span className="price">R$ 38,90</span>
         </div>
-        <motion.button 
+        <motion.button
           className="add-btn"
           animate={{ scale: [1, 0.94, 1] }}
-          transition={{ 
-            repeat: Infinity, 
-            duration: 2.5, 
+          transition={{
+            repeat: Infinity,
+            duration: 2.5,
             times: [0, 0.45, 0.55],
             delay: 1.2
           }}
@@ -582,18 +596,18 @@ const CartAnimationBadge = () => {
           <ShoppingBag size={14} /> Adicionar
         </motion.button>
       </div>
-      
-      <motion.div 
+
+      <motion.div
         className="cursor-container"
         initial={{ x: 100, y: 100, opacity: 0 }}
-        animate={{ 
-          x: [100, 20, 20, 100], 
+        animate={{
+          x: [100, 20, 20, 100],
           y: [100, 15, 15, 100],
           opacity: [0, 1, 1, 0],
           scale: [1, 1, 0.85, 1]
         }}
-        transition={{ 
-          repeat: Infinity, 
+        transition={{
+          repeat: Infinity,
           duration: 2.5,
           times: [0, 0.35, 0.55, 0.8],
           delay: 0.5
@@ -625,7 +639,7 @@ const FileExplorerServices = () => {
     {
       title: "Tráfego & Escala",
       desc: <>Anúncios precisos no Google e Meta <br className="desktop-only" /> focados em lucro e previsibilidade.</>,
-      video: "/a-clay-render-terracotta-funnel-centered-on-pure-b.mp4"
+      image: "/ads-service.png"
     },
     {
       title: <>Engenharia de <br className="desktop-only" /> Cardápio</>,
@@ -641,101 +655,124 @@ const FileExplorerServices = () => {
           const isBranding = service.title === "Identidade & Branding";
           return (
             <div key={`top-${idx}`} className={`service-clean-card${service.lava ? ' lava-card' : ''}`}>
-              {isBranding && <MinimalBrandingSystem />}
               {service.lava && (
-              <AnimatedGradient config={{
-                preset: 'custom',
-                color1: '#fae1de',
-                color2: '#fae1de',
-                color3: '#FFFFFF',
-                rotation: 114,
-                proportion: 100,
-                scale: 0.52,
-                speed: 30,
-                distortion: 7,
-                swirl: 18,
-                swirlIterations: 20,
-                softness: 1,
-                offset: 717,
-                shape: 'Edge',
-                shapeSize: 12,
-              }} pixelSize={2} ditherType="4x4" style={{ zIndex: 0 }} />
-            )}
-            <h4 style={service.lava || isBranding ? { position: 'relative', zIndex: 1 } : {}}>{service.title}</h4>
-            
-            {service.lava && <CartAnimationBadge />}
-            
-            {service.video && (
-              <div className="video-container-relative">
-                {service.title === "SEO Estratégico" && (
-                  <div className="search-badge-animation">
-                    <div className="search-badge-inner">
-                      <Search size={14} />
-                      <span>Restaurante perto de mim</span>
+                <AnimatedGradient config={{
+                  preset: 'custom',
+                  color1: '#fae1de',
+                  color2: '#fae1de',
+                  color3: '#FFFFFF',
+                  rotation: 114,
+                  proportion: 100,
+                  scale: 0.52,
+                  speed: 30,
+                  distortion: 7,
+                  swirl: 18,
+                  swirlIterations: 20,
+                  softness: 1,
+                  offset: 717,
+                  shape: 'Edge',
+                  shapeSize: 12,
+                }} pixelSize={2} ditherType="4x4" style={{ zIndex: 0 }} />
+              )}
+              <h4 style={service.lava || isBranding ? { position: 'relative', zIndex: 1 } : {}}>{service.title}</h4>
+
+              {service.lava && <CartAnimationBadge />}
+
+              {service.video && (
+                <div className="video-container-relative">
+                  {service.title === "SEO Estratégico" && (
+                    <div className="search-badge-animation">
+                      <div className="search-badge-inner">
+                        <Search size={14} />
+                        <span>Restaurante perto de mim</span>
+                      </div>
                     </div>
-                  </div>
-                )}
-                <video 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
-                  className="service-card-video"
-                >
-                  <source src={service.video} type="video/mp4" />
-                </video>
-              </div>
-            )}
-            
-            {service.image && (
-              <motion.img 
-                src={service.image} 
-                alt={service.title} 
-                className="service-card-image"
-                style={isBranding ? { position: 'relative', zIndex: 1 } : {}}
-                initial={isBranding ? { scale: 0, opacity: 0 } : {}}
-                animate={isBranding ? { 
-                  rotate: 360,
-                  scale: [0, 1.1, 1],
-                  opacity: 1
-                } : {}}
-                transition={isBranding ? {
-                  rotate: { duration: 40, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 1, delay: 1.2, ease: [0.34, 1.56, 0.64, 1] },
-                  opacity: { duration: 0.5, delay: 1.2 }
-                } : {}}
-              />
-            )}
-            <p style={service.lava || isBranding ? { position: 'relative', zIndex: 1 } : {}}>{service.desc}</p>
-          </div>
-        );
-      })}
+                  )}
+                  <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="service-card-video"
+                  >
+                    <source src={service.video} type="video/mp4" />
+                  </video>
+                </div>
+              )}
+
+              {service.image && (
+                <motion.img
+                  src={service.image}
+                  alt={service.title}
+                  className="service-card-image"
+                  style={isBranding ? { position: 'relative', zIndex: 1 } : {}}
+                  initial={isBranding ? { scale: 0, opacity: 0 } : {}}
+                  animate={isBranding ? {
+                    rotate: 360,
+                    scale: [0, 1.1, 1],
+                    opacity: 1
+                  } : {}}
+                  transition={isBranding ? {
+                    rotate: { duration: 40, repeat: Infinity, ease: "linear" },
+                    scale: { duration: 1, delay: 1.2, ease: [0.34, 1.56, 0.64, 1] },
+                    opacity: { duration: 0.5, delay: 1.2 }
+                  } : {}}
+                />
+              )}
+              <p style={service.lava || isBranding ? { position: 'relative', zIndex: 1 } : {}}>{service.desc}</p>
+            </div>
+          );
+        })}
       </div>
       <div className="services-grid-bottom">
         {services.slice(3, 5).map((service, idx) => {
-          const isSpecial = service.title === "Tráfego & Escala" || service.title === "Engenharia de Cardápio";
+          const isAds = service.title === "Tráfego & Escala";
+          const isSpecial = isAds || service.title === "Engenharia de Cardápio";
           return (
-            <div key={`bot-${idx}`} className={`service-clean-card${isSpecial ? ' traffic-card' : ''}`}>
-              <h4 style={{ position: 'relative', zIndex: 1 }}>{service.title}</h4>
-              {service.video && (
-                <video 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
-                  className={`service-card-video${isSpecial ? ' traffic-video' : ''}`}
-                >
-                  <source src={service.video} type="video/mp4" />
-                </video>
+            <div key={`bot-${idx}`} className={`service-clean-card${isSpecial ? ' traffic-card' : ''}${isAds ? ' ads-card-bg' : ''}`}>
+              {isAds ? (
+                <>
+                  {service.image && (
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="service-card-image ads-image"
+                    />
+                  )}
+                  <div className="ads-card-text-wrapper">
+                    <h4 style={{ position: 'relative', zIndex: 1, marginBottom: '0.5rem' }}>{service.title}</h4>
+                    <p style={{ position: 'relative', zIndex: 1 }}>{service.desc}</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h4 style={{ position: 'relative', zIndex: 1 }}>{service.title}</h4>
+                  {service.video && (
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className={`service-card-video${isSpecial ? ' traffic-video' : ''}`}
+                    >
+                      <source src={service.video} type="video/mp4" />
+                    </video>
+                  )}
+                  {service.image && (
+                    <div className="bird-container">
+                      {idx === 1 && (
+                        <div className="speech-bubble">Piu Piu!</div>
+                      )}
+                      <img
+                        src={service.image}
+                        alt="Service"
+                        className={`service-card-image${isAds ? ' ads-image' : (isSpecial ? ' traffic-video' : '')}${idx === 1 ? " bird-image" : ""}`}
+                      />
+                    </div>
+                  )}
+                  <p style={{ position: 'relative', zIndex: 1 }}>{service.desc}</p>
+                </>
               )}
-              {service.image && (
-                <img 
-                  src={service.image} 
-                  alt={service.title} 
-                  className={`service-card-image${isSpecial ? ' traffic-video' : ''}${service.title === "Engenharia de Cardápio" ? " bird-image" : ""}`}
-                />
-              )}
-              <p style={{ position: 'relative', zIndex: 1 }}>{service.desc}</p>
             </div>
           );
         })}
@@ -781,7 +818,7 @@ const ContactForm = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({ name: '', email: '', business: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  
+
   const options = ["Até R$ 30k", "R$ 30k — R$ 100k", "Acima de R$ 100k"];
 
   const handleSubmit = async (e) => {
@@ -801,7 +838,7 @@ const ContactForm = ({ isOpen, onClose }) => {
         method: "POST",
         body: payload
       });
-      
+
       const data = await response.json();
 
       if (data.success) {
@@ -848,28 +885,28 @@ const ContactForm = ({ isOpen, onClose }) => {
             <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <label>Nome Completo</label>
-                <input type="text" placeholder="Seu nome" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                <input type="text" placeholder="Seu nome" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
               </div>
               <div className="input-group">
                 <label>Seu E-mail</label>
-                <input type="email" placeholder="seu@email.com" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                <input type="email" placeholder="seu@email.com" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
               </div>
               <div className="input-row">
                 <div className="input-group">
                   <label>Nome do Restaurante</label>
-                  <input type="text" placeholder="Nome do seu negócio" required value={formData.business} onChange={(e) => setFormData({...formData, business: e.target.value})} />
+                  <input type="text" placeholder="Nome do seu negócio" required value={formData.business} onChange={(e) => setFormData({ ...formData, business: e.target.value })} />
                 </div>
                 <div className="input-group" style={{ position: 'relative' }}>
                   <label>Faturamento Mensal</label>
                   <input type="hidden" required value={selectedOption} />
-                  <div 
+                  <div
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    style={{ 
-                      padding: '12px 16px', 
-                      background: '#f8fafc', 
-                      border: '1px solid #e2e8f0', 
-                      borderRadius: '12px', 
-                      display: 'flex', 
+                    style={{
+                      padding: '12px 16px',
+                      background: '#f8fafc',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '12px',
+                      display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       cursor: 'pointer',
@@ -883,34 +920,34 @@ const ContactForm = ({ isOpen, onClose }) => {
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                   </div>
-                  
+
                   <AnimatePresence>
                     {isDropdownOpen && (
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -5 }}
                         transition={{ duration: 0.15 }}
-                        style={{ 
-                          position: 'absolute', 
-                          top: '100%', 
-                          left: 0, 
-                          right: 0, 
-                          marginTop: '6px', 
-                          background: '#fff', 
-                          border: '1px solid #e2e8f0', 
-                          borderRadius: '12px', 
-                          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)', 
+                        style={{
+                          position: 'absolute',
+                          top: '100%',
+                          left: 0,
+                          right: 0,
+                          marginTop: '6px',
+                          background: '#fff',
+                          border: '1px solid #e2e8f0',
+                          borderRadius: '12px',
+                          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
                           zIndex: 50,
                           overflow: 'hidden'
                         }}
                       >
                         {options.map((opt, idx) => (
-                          <div 
+                          <div
                             key={opt}
                             onClick={() => { setSelectedOption(opt); setIsDropdownOpen(false); }}
-                            style={{ 
-                              padding: '12px 16px', 
+                            style={{
+                              padding: '12px 16px',
                               cursor: 'pointer',
                               color: selectedOption === opt ? 'var(--primary)' : '#334155',
                               fontWeight: selectedOption === opt ? '700' : '500',
@@ -1013,7 +1050,7 @@ function App() {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               style={{ position: 'fixed', top: 0, right: 0, bottom: 0, width: '100%', background: '#fff', zIndex: 1000, display: 'flex', flexDirection: 'column', padding: '5rem 2rem' }}
             >
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 style={{ position: 'absolute', top: '24px', right: '24px', background: 'transparent', border: 'none', color: '#111', cursor: 'pointer', padding: '8px' }}
               >
@@ -1128,11 +1165,11 @@ function App() {
           viewport={{ once: true }}
         >
           <div className="card-inner" style={{ padding: '2rem 1.5rem', textAlign: 'center', background: '#fcfffe', borderBottom: 'none' }}>
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
               style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 1.5rem', display: 'block' }}
             >
               <source src="/bird-bio.mp4" type="video/mp4" />
@@ -1251,11 +1288,11 @@ function App() {
         >
           <div className="card-inner" style={{ padding: '3rem 0', background: 'rgb(252, 252, 252)', display: 'block', overflow: 'hidden' }}>
             <div style={{ textAlign: 'center', padding: '0 1.5rem' }}>
-              <video 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
                 style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 1.5rem', display: 'block' }}
               >
                 <source src="/bird-bio-front.mp4" type="video/mp4" />
