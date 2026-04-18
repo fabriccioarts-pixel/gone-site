@@ -885,6 +885,14 @@ const ContactForm = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setSubmitSuccess(false);
+      setFormData({ name: '', email: '', business: '' });
+      setSelectedOption("");
+    }
+  }, [isOpen]);
+
   const options = ["Até R$ 30k", "R$ 30k — R$ 100k", "Acima de R$ 100k"];
 
   const handleSubmit = async (e) => {
@@ -909,12 +917,6 @@ const ContactForm = ({ isOpen, onClose }) => {
 
       if (data.success) {
         setSubmitSuccess(true);
-        setTimeout(() => {
-          setSubmitSuccess(false);
-          setFormData({ name: '', email: '', business: '' });
-          setSelectedOption("");
-          onClose();
-        }, 2000);
       } else {
         console.error("API error:", data);
       }
@@ -943,100 +945,104 @@ const ContactForm = ({ isOpen, onClose }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <button className="close-btn" onClick={onClose}><X size={24} /></button>
-            <div className="form-header">
-              <span className="tag">Inicie sua escala hoje</span>
-              <h2>Agendar Consultoria <span style={{ fontFamily: "'DakotaRough', sans-serif", color: '#999' }}>GRaTuiTa</span></h2>
-              <p>Preencha os dados abaixo e entraremos em contato em até 24h.</p>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="input-group">
-                <label>Nome Completo</label>
-                <input type="text" placeholder="Seu nome" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-              </div>
-              <div className="input-group">
-                <label>Seu E-mail</label>
-                <input type="email" placeholder="seu@email.com" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-              </div>
-              <div className="input-row">
-                <div className="input-group">
-                  <label>Nome do Negócio</label>
-                  <input type="text" placeholder="Nome do seu negócio" required value={formData.business} onChange={(e) => setFormData({ ...formData, business: e.target.value })} />
-                </div>
-                <div className="input-group" style={{ position: 'relative' }}>
-                  <label>Faturamento Mensal</label>
-                  <input type="hidden" required value={selectedOption} />
-                  <div
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    style={{
-                      padding: '12px 16px',
-                      background: '#f8fafc',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '12px',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                      color: selectedOption ? '#111' : '#64748b',
-                      fontSize: '0.95rem',
-                      userSelect: 'none'
-                    }}
-                  >
-                    {selectedOption || "Selecione..."}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'none', transition: '0.3s' }}>
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </div>
 
-                  <AnimatePresence>
-                    {isDropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        transition={{ duration: 0.15 }}
-                        style={{
-                          position: 'absolute',
-                          top: '100%',
-                          left: 0,
-                          right: 0,
-                          marginTop: '6px',
-                          background: '#fff',
-                          border: '1px solid #e2e8f0',
-                          borderRadius: '12px',
-                          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
-                          zIndex: 50,
-                          overflow: 'hidden'
-                        }}
-                      >
-                        {options.map((opt, idx) => (
-                          <div
-                            key={opt}
-                            onClick={() => { setSelectedOption(opt); setIsDropdownOpen(false); }}
-                            style={{
-                              padding: '12px 16px',
-                              cursor: 'pointer',
-                              color: selectedOption === opt ? 'var(--primary)' : '#334155',
-                              fontWeight: selectedOption === opt ? '700' : '500',
-                              fontSize: '0.95rem',
-                              borderBottom: idx !== options.length - 1 ? '1px solid #f1f5f9' : 'none',
-                              transition: 'background 0.2s',
-                              background: '#fff'
-                            }}
-                            onMouseOver={(e) => e.currentTarget.style.background = '#f8fafc'}
-                            onMouseOut={(e) => e.currentTarget.style.background = '#fff'}
-                          >
-                            {opt}
-                          </div>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-              <button type="submit" className="btn-bento full" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
-                {submitSuccess ? "Recebido! Entraremos em contato" : isSubmitting ? "Enviando..." : "Garantir meu Diagnóstico"} <ArrowRight size={18} />
-              </button>
-            </form>
+            <AnimatePresence mode="wait">
+              {submitSuccess ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '2rem 1rem', gap: '1.2rem' }}
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.15, type: 'spring', stiffness: 260, damping: 18 }}
+                    style={{ width: 72, height: 72, borderRadius: '50%', background: '#E03720', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <CheckCircle2 size={36} color="#fff" strokeWidth={2.5} />
+                  </motion.div>
+                  <h2 style={{ fontSize: '1.8rem', lineHeight: 1.1, fontFamily: "'ABC Diatype', sans-serif" }}>
+                    Agendamento <span style={{ fontFamily: "'DakotaRough', sans-serif", color: '#999' }}>confirmado!</span>
+                  </h2>
+                  <p style={{ color: '#555', fontSize: '1rem', lineHeight: 1.5, maxWidth: 340 }}>
+                    Recebemos seu pedido. Nossa equipe vai entrar em contato em até <strong>24 horas</strong> para confirmar sua consultoria.
+                  </p>
+                  <button
+                    onClick={onClose}
+                    className="btn-bento full"
+                    style={{ marginTop: '0.5rem' }}
+                  >
+                    Fechar <ArrowRight size={18} />
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <div className="form-header">
+                    <span className="tag">Inicie sua escala hoje</span>
+                    <h2>Agendar Consultoria <span style={{ fontFamily: "'DakotaRough', sans-serif", color: '#999' }}>GRaTuiTa</span></h2>
+                    <p>Preencha os dados abaixo e entraremos em contato em até 24h.</p>
+                  </div>
+                  <form onSubmit={handleSubmit}>
+                    <div className="input-group">
+                      <label>Nome Completo</label>
+                      <input type="text" placeholder="Seu nome" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                    </div>
+                    <div className="input-group">
+                      <label>Seu E-mail</label>
+                      <input type="email" placeholder="seu@email.com" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                    </div>
+                    <div className="input-row">
+                      <div className="input-group">
+                        <label>Nome do Negócio</label>
+                        <input type="text" placeholder="Nome do seu negócio" required value={formData.business} onChange={(e) => setFormData({ ...formData, business: e.target.value })} />
+                      </div>
+                      <div className="input-group" style={{ position: 'relative' }}>
+                        <label>Faturamento Mensal</label>
+                        <input type="hidden" required value={selectedOption} />
+                        <div
+                          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                          style={{ padding: '12px 16px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', color: selectedOption ? '#111' : '#64748b', fontSize: '0.95rem', userSelect: 'none' }}
+                        >
+                          {selectedOption || "Selecione..."}
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'none', transition: '0.3s' }}>
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </div>
+                        <AnimatePresence>
+                          {isDropdownOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -5 }}
+                              transition={{ duration: 0.15 }}
+                              style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '6px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)', zIndex: 50, overflow: 'hidden' }}
+                            >
+                              {options.map((opt, idx) => (
+                                <div
+                                  key={opt}
+                                  onClick={() => { setSelectedOption(opt); setIsDropdownOpen(false); }}
+                                  style={{ padding: '12px 16px', cursor: 'pointer', color: selectedOption === opt ? 'var(--primary)' : '#334155', fontWeight: selectedOption === opt ? '700' : '500', fontSize: '0.95rem', borderBottom: idx !== options.length - 1 ? '1px solid #f1f5f9' : 'none', transition: 'background 0.2s', background: '#fff' }}
+                                  onMouseOver={(e) => e.currentTarget.style.background = '#f8fafc'}
+                                  onMouseOut={(e) => e.currentTarget.style.background = '#fff'}
+                                >
+                                  {opt}
+                                </div>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                    <button type="submit" className="btn-bento full" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
+                      {isSubmitting ? "Enviando..." : "Garantir meu Diagnóstico"} <ArrowRight size={18} />
+                    </button>
+                  </form>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </motion.div>
       )}
@@ -1178,6 +1184,7 @@ const IntroScreen = ({ onComplete }) => {
         <motion.svg
           viewBox="0 0 80 35"
           style={{ position: 'absolute', height: '95px', width: 'auto' }}
+          initial={{ opacity: 0, y: 30 }}
           animate={step === 0 ? { opacity: 0, y: 30 } : step === 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
           transition={tr}
         >
@@ -1188,6 +1195,7 @@ const IntroScreen = ({ onComplete }) => {
         <motion.svg
           viewBox="41 0 115 35"
           style={{ position: 'absolute', height: '95px', width: 'auto' }}
+          initial={{ opacity: 0, y: 30 }}
           animate={step < 3 ? { opacity: 0, y: 30 } : step === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
           transition={tr}
         >
@@ -1199,6 +1207,7 @@ const IntroScreen = ({ onComplete }) => {
         <motion.svg
           viewBox="0 0 176 35"
           style={{ position: 'absolute', height: '62px', width: 'auto' }}
+          initial={{ opacity: 0, y: 20, scale: 0.96 }}
           animate={step >= 4 ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.96 }}
           transition={{ ...tr, duration: 0.8 }}
         >
@@ -2139,7 +2148,7 @@ function App() {
 
       </div>
 
-      <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
+      <ContactForm isOpen={isFormOpen} onClose={() => { setIsFormOpen(false); }} />
       <WhatsAppButton />
     </>
   );
