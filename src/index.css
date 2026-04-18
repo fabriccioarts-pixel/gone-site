@@ -230,6 +230,11 @@ h3 {
   margin-left: -0.5px;
 }
 
+.posts-carousel-card {
+  overflow: visible;
+  z-index: 1;
+}
+
 .card-inner {
   background: var(--bg-card);
   border-radius: 15px;
@@ -298,12 +303,20 @@ h3 {
   align-items: center;
   justify-content: center;
   min-height: 50vh;
+  padding-right: 34% !important;
+}
+
+@media (max-width: 768px) {
+  .hero-bento {
+    padding-right: 1.5rem !important;
+  }
 }
 
 @media (max-width: 991px) {
   .hero-bento {
     min-height: 70vh !important;
     padding: 4rem 1.5rem !important;
+    padding-bottom: 4rem !important;
   }
 }
 
@@ -342,21 +355,23 @@ h3 {
   width: auto;
   object-fit: contain;
   object-position: bottom;
-  z-index: 5;
+  z-index: 12;
   pointer-events: none;
 }
 
 @media (max-width: 768px) {
   .hero-bento {
-    padding-bottom: 32% !important;
+    min-height: 80dvh !important;
+    padding: 3.5rem 1.5rem !important;
+    padding-bottom: 36% !important;
   }
 
   .hero-bird {
     position: absolute;
-    bottom: -27%;
+    bottom: -25%;
     right: 50%;
     transform: translateX(50%);
-    height: 55%;
+    height: 50%;
   }
 }
 
@@ -420,6 +435,14 @@ h3 {
   gap: 1.25rem;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   background: var(--bg-card);
+  min-height: 240px;
+  justify-content: flex-start;
+}
+
+.service-item .icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .service-item .icon {
@@ -1156,7 +1179,8 @@ h3 {
 
   .hero-bento {
     padding: 4rem 1.2rem !important;
-    min-height: 70vh !important;
+    min-height: 80dvh !important;
+    padding-bottom: 36% !important;
   }
 
   .hero-bento h1 {
