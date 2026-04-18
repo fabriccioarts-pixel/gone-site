@@ -27,13 +27,21 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'DakotaRough';
+  src: url('/DakotaRough-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Rethink+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@300..700&display=swap');
 
 :root {
   /* Gone® Ultrathin Grid */
   --primary: #E03720;
-  --bg-page: #ffffff;
-  --bg-card: #ffffff;
+  --bg-page: rgb(252, 252, 252);
+  --bg-card: rgb(252, 252, 252);
   --text-main: #111827;
   --text-muted: #4b5563;
   --border-color: #f3f4f6;
@@ -143,18 +151,18 @@ h3 {
 }
 
 .qual-title-card {
-  background: #fff;
+  background: var(--primary);
   padding: 3rem 2rem 2rem 2rem;
-  border: 0.5px solid #eee;
+  border: none;
   border-radius: 24px;
   position: relative;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .qual-info-card {
-  background: #fff;
+  background: var(--primary);
   padding: 3rem 2rem;
-  border: 0.5px solid #eee;
+  border: none;
   border-radius: 24px;
   flex: 1;
   display: flex;
@@ -166,7 +174,7 @@ h3 {
 .qual-title-card h3 {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #111;
+  color: #fff;
   margin: 0;
 }
 
@@ -175,13 +183,13 @@ h3 {
   top: 1.5rem;
   right: 1.5rem;
   font-size: 0.8rem;
-  color: #999;
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 500;
 }
 
 .qual-main {
   font-size: 1.05rem;
-  color: #333;
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 4rem;
   line-height: 1.5;
   flex: 1;
@@ -189,7 +197,7 @@ h3 {
 
 .qual-footer {
   font-size: 1rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.4;
   font-weight: 400;
 }
@@ -223,7 +231,7 @@ h3 {
 }
 
 .card-inner {
-  background: #ffffff;
+  background: var(--bg-card);
   border-radius: 15px;
   padding: 1.5rem;
   height: 100%;
@@ -292,6 +300,13 @@ h3 {
   min-height: 50vh;
 }
 
+@media (max-width: 991px) {
+  .hero-bento {
+    min-height: 70vh !important;
+    padding: 4rem 1.5rem !important;
+  }
+}
+
 .hero-bento h1 {
   font-size: 4.5rem;
   line-height: 0.9;
@@ -299,15 +314,55 @@ h3 {
   max-width: 900px;
 }
 
+.hero-bento h1 {
+  color: #ffffff;
+}
+
 .hero-bento h1 span {
-  color: var(--primary);
+  color: #711100;
+  font-family: 'DakotaRough', sans-serif;
 }
 
 .hero-bento p {
   font-size: 1.25rem;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.75);
   max-width: 600px;
   margin-bottom: 3rem;
+}
+
+.hero-bento .tag {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.hero-bird {
+  position: absolute;
+  bottom: 0;
+  right: 4%;
+  height: 78%;
+  width: auto;
+  object-fit: contain;
+  object-position: bottom;
+  z-index: 5;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .hero-bento {
+    padding-bottom: 32% !important;
+  }
+
+  .hero-bird {
+    position: absolute;
+    bottom: -27%;
+    right: 50%;
+    transform: translateX(50%);
+    height: 55%;
+  }
+}
+
+.hero-bento .btn-bento {
+  background: #ffffff;
+  color: #E03720;
 }
 
 .btn-bento {
@@ -331,15 +386,41 @@ h3 {
   filter: brightness(0.9);
 }
 
+/* Top 3 services mobile carousel */
+.top-carousel-outer {
+  overflow: hidden;
+  width: 100%;
+  padding: 1.5rem 0;
+  cursor: grab;
+}
+
+.top-carousel-outer:active {
+  cursor: grabbing;
+}
+
+.top-carousel-track {
+  display: flex;
+  gap: 0.75rem;
+  width: max-content;
+  user-select: none;
+}
+
+.top-carousel-card {
+  flex: 0 0 78vw;
+  border: 0.5px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--bg-card);
+}
+
 /* Service Cards in Bento */
 .service-item {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--bg-card);
 }
-
-
 
 .service-item .icon {
   color: var(--primary);
@@ -363,6 +444,8 @@ h3 {
 .service-item h3 span {
   color: #999;
   font-weight: 500;
+  font-family: Helvetica, Arial, sans-serif;
+  text-transform: lowercase;
 }
 
 .service-item p {
@@ -429,7 +512,7 @@ h3 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background: var(--bg-card) ;
   overflow: hidden;
 }
 
@@ -494,7 +577,7 @@ h3 {
   z-index: 5;
   width: 60px;
   height: 60px;
-  background: #fff;
+  background: var(--bg-card) ;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -549,7 +632,7 @@ h3 {
   min-height: 500px;
   position: relative;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--bg-card) ;
   padding: 4rem 4rem;
   display: flex !important;
   flex-direction: row !important;
@@ -636,7 +719,7 @@ h3 {
 }
 
 .milestone-card {
-  background: #fff;
+  background: var(--bg-card) ;
   padding: 8px 14px;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
@@ -667,7 +750,7 @@ h3 {
 
 .strategy-panel.glass.v3 {
   position: relative;
-  background: #ffffff;
+  background: var(--bg-card) ;
   border-radius: 20px;
   border: 1px solid #e2e8f0;
   width: 100%;
@@ -828,7 +911,7 @@ h3 {
   max-width: 850px;
   height: 480px;
   margin: 0 auto;
-  background: #fff;
+  background: var(--bg-card) ;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   overflow: hidden;
@@ -843,7 +926,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 1.2rem;
-  background: #ffffff;
+  background: var(--bg-card) ;
 }
 
 .mac-dots {
@@ -914,7 +997,7 @@ h3 {
   gap: 0.5rem;
   font-size: 0.85rem;
   color: #64748b;
-  background: #fff;
+  background: var(--bg-card) ;
   padding: 4px 12px;
   border-radius: 6px;
   border: 1px solid #e2e8f0;
@@ -993,7 +1076,7 @@ h3 {
   align-items: center;
   gap: -8px;
   /* Negative gap for overlap */
-  background: #fff;
+  background: var(--bg-card) ;
   padding: 6px 16px;
   border-radius: 100px;
   border: 1px solid #e2e8f0;
@@ -1026,7 +1109,7 @@ h3 {
 
   .bento-wrapper {
     grid-template-columns: 25px 1fr 25px !important;
-    padding: 140px 0 0 0 !important;
+    padding: 60px 0 0 0 !important;
     width: 100%;
     overflow-x: hidden;
   }
@@ -1072,7 +1155,8 @@ h3 {
   }
 
   .hero-bento {
-    padding: 3rem 1.2rem !important;
+    padding: 4rem 1.2rem !important;
+    min-height: 70vh !important;
   }
 
   .hero-bento h1 {
@@ -1410,7 +1494,7 @@ h3 {
   flex-direction: row;
   align-items: stretch;
   /* Align height */
-  background: #fff;
+  background: var(--bg-card) ;
   height: 100%;
 }
 
@@ -1422,54 +1506,9 @@ h3 {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: #fff;
+  background: var(--bg-card) ;
 }
 
-.ceo-grid-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  background-position: center;
-  pointer-events: none;
-}
-
-/* Intersection Lines */
-.ceo-line-h {
-  position: absolute;
-  height: 1px;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.07);
-  z-index: 5;
-}
-
-.ceo-line-v {
-  position: absolute;
-  width: 1px;
-  top: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.07);
-  z-index: 5;
-}
-
-.ceo-line-top {
-  top: 12%;
-}
-
-.ceo-line-bottom {
-  bottom: 12%;
-}
-
-.ceo-line-left {
-  left: 15%;
-}
-
-.ceo-line-right {
-  right: 15%;
-}
 
 .ceo-content-wrap {
   position: relative;
@@ -1537,22 +1576,6 @@ h3 {
 
   .ceo-content-wrap {
     padding: 5.5rem 2.5rem;
-  }
-
-  .ceo-line-left {
-    left: 1.5rem;
-  }
-
-  .ceo-line-right {
-    right: 1.5rem;
-  }
-
-  .ceo-line-top {
-    top: 4rem;
-  }
-
-  .ceo-line-bottom {
-    bottom: 4rem;
   }
 
   .ceo-image-side {
@@ -1650,7 +1673,7 @@ h3 {
   width: 85%;
   max-width: 400px;
   height: 100vh;
-  background: #fff;
+  background: var(--bg-card) ;
   z-index: 1100;
   padding: 6rem 2.5rem;
   box-shadow: -20px 0 60px rgba(0, 0, 0, 0.1);
@@ -1705,7 +1728,7 @@ h3 {
 }
 
 .modal-content {
-  background: #fff;
+  background: var(--bg-card) ;
   width: 100%;
   max-width: 550px;
   border-radius: 24px;
@@ -1797,7 +1820,7 @@ input:focus,
 select:focus {
   outline: none;
   border-color: var(--primary);
-  background: #fff;
+  background: var(--bg-card) ;
   box-shadow: 0 0 0 4px rgba(224, 55, 32, 0.1);
 }
 
@@ -1833,7 +1856,7 @@ select:focus {
 .whatsapp-float .tooltip {
   position: absolute;
   right: 80px;
-  background: #fff;
+  background: var(--bg-card) ;
   color: #111;
   padding: 8px 16px;
   border-radius: 100px;
@@ -1964,7 +1987,7 @@ select:focus {
 /* SERVICES SECTION */
 .services-row {
   display: flex;
-  background: #fff;
+  background: var(--bg-card) ;
   min-height: 600px;
 }
 
@@ -1980,7 +2003,7 @@ select:focus {
 .services-cards-side {
   width: 60%;
   padding: 4rem;
-  background: #fff;
+  background: var(--bg-card) ;
   display: flex;
   align-items: center;
 }
@@ -1994,7 +2017,7 @@ select:focus {
 
 .service-mini-card {
   padding: 2rem;
-  background: #fff;
+  background: var(--bg-card) ;
   border: 1px solid #f0f0f0;
   border-radius: 12px;
   transition: all 0.3s ease;
@@ -2050,7 +2073,7 @@ select:focus {
 }
 
 .explorer-window {
-  background: #ffffff;
+  background: var(--bg-card) ;
   border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
@@ -2115,7 +2138,7 @@ select:focus {
 }
 
 .explorer-tab.active {
-  background: #ffffff;
+  background: var(--bg-card) ;
   border-right: 1px solid var(--border-color);
   border-left: 1px solid var(--border-color);
   box-shadow: 0 -2px 0 var(--primary) inset;
@@ -2310,7 +2333,7 @@ select:focus {
   }
 
   .explorer-tab.active {
-    background: #fff;
+    background: var(--bg-card) ;
     /* Desktop style indicator but on the LEFT for vertical layout */
     box-shadow: 4px 0 0 var(--primary) inset !important;
   }
@@ -2342,7 +2365,7 @@ select:focus {
 /* Phone Mockup */
 .phone-mockup {
   width: 100%;
-  max-width: 320px;
+  max-width: 220px;
   height: auto;
   aspect-ratio: 320 / 640;
   background: #000;
@@ -2357,7 +2380,7 @@ select:focus {
 .phone-screen {
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: var(--bg-card) ;
   border-radius: 36px;
   overflow: hidden;
   position: relative;
@@ -2467,7 +2490,7 @@ select:focus {
 /* IFood Feed Section Styles */
 .ifood-feed-section {
   min-height: auto;
-  background: #fff;
+  background: var(--bg-card) ;
   padding: 6rem 3rem;
   display: flex;
   flex-direction: row !important;
@@ -2552,7 +2575,7 @@ select:focus {
 .phone-screen {
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: var(--bg-card) ;
   border-radius: 36px;
   overflow: hidden;
   position: relative;
@@ -2662,7 +2685,7 @@ select:focus {
 /* IFood Feed Section Styles */
 .ifood-feed-section {
   min-height: auto;
-  background: #fff;
+  background: var(--bg-card) ;
   padding: 6rem 3rem;
   display: flex;
   flex-direction: row !important;
@@ -2734,7 +2757,7 @@ select:focus {
 .services-clean-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
 .services-grid-top { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .services-grid-bottom { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-.service-clean-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 2.5rem 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; text-align: left; position: relative; overflow: hidden; }
+.service-clean-card { background: var(--bg-card) ; border: 1px solid #e2e8f0; border-radius: 16px; padding: 2.5rem 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; text-align: left; position: relative; overflow: hidden; }
 .lava-card { background: transparent !important; border: 1px solid #e2e8f0; }
 .lava-card h4 { color: #000 !important; }
 .lava-card p { color: #000 !important; }
@@ -2806,6 +2829,14 @@ select:focus {
   margin-bottom: 2rem;
   border-radius: 12px;
 }
+
+.branding-img-hover {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.branding-img-hover:hover {
+  transform: scale(1.15);
+}
 .service-clean-card p { font-size: 0.95rem; color: #64748b; line-height: 1.5; margin: 0; }
 @media (max-width: 900px) { .services-grid-top { grid-template-columns: repeat(2, 1fr); } .services-grid-bottom { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .services-grid-top { grid-template-columns: 1fr; } .services-clean-container { padding: 2.5rem 1.5rem; } }
@@ -2823,7 +2854,7 @@ select:focus {
 }
 
 .cart-badge-item {
-  background: #fff;
+  background: var(--bg-card) ;
   border-radius: 16px;
   padding: 1rem;
   width: 100%;
@@ -2922,10 +2953,12 @@ select:focus {
   min-height: 520px !important;
   justify-content: flex-start !important;
   padding: 3rem 2.5rem !important;
+  background: linear-gradient(160deg, #ffffff 20%, #ffd6cc 100%) !important;
+  border-color: #f5c4b8 !important;
 }
 
 .service-clean-card.ads-card-bg {
-  background: #ffffff !important;
+  background: var(--bg-card) ;
   padding: 0 !important;
   display: flex !important;
   flex-direction: column !important;
@@ -2998,7 +3031,7 @@ select:focus {
   top: -30px;
   left: 50%;
   transform: translateX(-50%);
-  background: #ffffff;
+  background: var(--bg-card) ;
   border: 1px solid #e2e8f0;
   padding: 8px 14px;
   border-radius: 14px;
@@ -3019,7 +3052,7 @@ select:focus {
   margin-left: -5px;
   width: 10px;
   height: 10px;
-  background: #ffffff;
+  background: var(--bg-card) ;
   border-right: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
   transform: rotate(45deg);
@@ -3119,7 +3152,7 @@ select:focus {
 
 /* Discreto Variant for Branding Badges */
 .branding-badge.discreto {
-  background: #ffffff;
+  background: var(--bg-card) ;
   backdrop-filter: blur(4px);
   padding: 4px 10px;
   border: 1px solid #e2e8f0;
@@ -3138,7 +3171,7 @@ select:focus {
 .minimal-badge {
   padding: 4px 12px;
   
-  background: #ffffff;
+  background: var(--bg-card) ;
   border-radius: 100px;
   display: flex;
   align-items: center;

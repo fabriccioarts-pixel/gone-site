@@ -35,7 +35,7 @@ import {
   Sparkles,
   Fingerprint
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useAnimationFrame } from 'framer-motion';
 import { DitheringShader } from '@/components/ui/dithering-shader';
 import AnimatedGradient from '@/components/ui/animated-gradient';
 
@@ -150,23 +150,97 @@ const GrowthSystem = () => {
   );
 };
 
+// Base resting angle: tilted left
+const PHONE_BASE_ROT_X = 5;
+const PHONE_BASE_ROT_Y = -22;
+
 const PhoneMockup = ({ children }) => {
+  const containerRef = React.useRef(null);
+  const rafRef = React.useRef(null);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1024;
+  const baseRotX = isMobile ? 0 : PHONE_BASE_ROT_X;
+  const baseRotY = isMobile ? 0 : PHONE_BASE_ROT_Y;
+  const [tilt, setTilt] = React.useState({ rotX: baseRotX, rotY: baseRotY, glareX: 30, glareY: 40, active: false });
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);   // -1 → +1
+    const dy = (e.clientY - cy) / (rect.height / 2);  // -1 → +1
+
+    const maxTilt = 16;
+    // Offset on top of the base angle
+    const targetRotX = PHONE_BASE_ROT_X + (-dy * maxTilt);
+    const targetRotY = PHONE_BASE_ROT_Y + (dx * maxTilt);
+    const glareX = ((e.clientX - rect.left) / rect.width) * 100;
+    const glareY = ((e.clientY - rect.top) / rect.height) * 100;
+
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      setTilt({ rotX: targetRotX, rotY: targetRotY, glareX, glareY, active: true });
+    });
+  };
+
+  const handleMouseLeave = () => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    setTilt({ rotX: baseRotX, rotY: baseRotY, glareX: 30, glareY: 40, active: false });
+  };
+
   return (
-    <div className="phone-mockup">
-      <div className="phone-dynamic-island"></div>
-      <div className="phone-home-indicator"></div>
-      <div className="phone-screen">
-        <div className="phone-status-bar">
-          <div className="time">9:41</div>
-          <div className="status-right">
-            <svg width="17" height="11" viewBox="0 0 17 11" fill="none">
-              <path d="M14 2H2V9H14V2Z" stroke="black" strokeWidth="1.2" />
-              <path d="M15.5 4.5V6.5" stroke="black" strokeWidth="1.2" />
-              <path d="M4 4H12V7H4V4Z" fill="black" />
-            </svg>
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        perspective: '900px',
+        perspectiveOrigin: '50% 50%',
+        display: 'inline-block',
+        cursor: 'default',
+      }}
+    >
+      <div
+        className="phone-mockup"
+        style={{
+          transform: `rotateX(${tilt.rotX}deg) rotateY(${tilt.rotY}deg) scale(${tilt.active ? 1.04 : 1})`,
+          transition: tilt.active
+            ? 'transform 0.08s ease-out'
+            : 'transform 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
+          transformStyle: 'preserve-3d',
+          position: 'relative',
+          willChange: 'transform',
+          boxShadow: 'none',
+        }}
+      >
+        {/* Specular glare highlight */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: 'inherit',
+            pointerEvents: 'none',
+            zIndex: 20,
+            background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.05) 50%, transparent 70%)`,
+            opacity: tilt.active ? 1 : 0.4,
+            transition: 'opacity 0.4s ease',
+          }}
+        />
+        <div className="phone-dynamic-island"></div>
+        <div className="phone-home-indicator"></div>
+        <div className="phone-screen">
+          <div className="phone-status-bar">
+            <div className="time">9:41</div>
+            <div className="status-right">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="none">
+                <path d="M14 2H2V9H14V2Z" stroke="black" strokeWidth="1.2" />
+                <path d="M15.5 4.5V6.5" stroke="black" strokeWidth="1.2" />
+                <path d="M4 4H12V7H4V4Z" fill="black" />
+              </svg>
+            </div>
           </div>
+          {children}
         </div>
-        {children}
       </div>
     </div>
   );
@@ -384,7 +458,7 @@ const LeadQualification = () => {
     <div className="qualification-container">
       <div className="qual-header">
         <span className="tag-pill">Por que nos escolher</span>
-        <h2>Quando escolher a Gone, <span>faz total sentido.</span></h2>
+        <h2>Quando escolher a Gone,<br /><span style={{ fontFamily: "'DakotaRough', sans-serif", color: 'var(--primary)' }}>FaZ ToTaL SeNTiDo.</span></h2>
         <p><strong>Escalar faturamento exige técnica, dados e processos claros.</strong><br className="desktop-only" />Se você se identifica com os pontos abaixo, estamos prontos para acelerar.</p>
       </div>
 
@@ -396,6 +470,7 @@ const LeadQualification = () => {
           </div>
           <div className="qual-info-card">
             <p className="qual-main">Seu restaurante já fatura acima de R$ 30k e você busca o próximo nível de escala.</p>
+            <img src="/faturamento.png" alt="Faturamento" style={{ width: '100%', maxHeight: '160px', objectFit: 'contain', margin: '1rem 0' }} />
             <p className="qual-footer">Faz sentido quando você entende que faturar mais exige investimento estratégico e dados.</p>
           </div>
         </div>
@@ -407,6 +482,7 @@ const LeadQualification = () => {
           </div>
           <div className="qual-info-card">
             <p className="qual-main">Você entende que o digital não é 'postzinho', mas o principal canal de vendas do bairro.</p>
+            <img src="/mentalidade.png" alt="Mentalidade" style={{ width: '100%', maxHeight: '160px', objectFit: 'contain', margin: '1rem 0' }} />
             <p className="qual-footer">Faz sentido quando você busca uma assessoria focada em ROI, não apenas em curtidas.</p>
           </div>
         </div>
@@ -418,6 +494,7 @@ const LeadQualification = () => {
           </div>
           <div className="qual-info-card">
             <p className="qual-main">Sua cozinha está pronta para o volume, mas o funil de vendas digital está travado.</p>
+            <img src="/Operação.png" alt="Operação" style={{ width: '100%', maxHeight: '160px', objectFit: 'contain', margin: '1rem 0' }} />
             <p className="qual-footer">Faz sentido quando o gargalo do negócio não é a produção, mas a aquisição de novos clientes.</p>
           </div>
         </div>
@@ -438,7 +515,7 @@ const FAQ = () => {
   return (
     <div className="faq-container">
       <span className="tag">Dúvidas frequentes</span>
-      <h2 style={{ fontSize: '2.2rem', marginBottom: '2.5rem' }}>Perguntas <span>Comuns</span></h2>
+      <h2 style={{ fontSize: '2.2rem', marginBottom: '2.5rem' }}>Perguntas <span style={{ fontFamily: "'DakotaRough', sans-serif", color: '#999' }}>CoMuNS</span></h2>
       <div className="faq-list">
         {faqs.map((faq, i) => (
           <div key={i} className={`faq-item ${openIndex === i ? 'open' : ''}`} onClick={() => setOpenIndex(openIndex === i ? null : i)}>
@@ -701,23 +778,25 @@ const FileExplorerServices = () => {
               )}
 
               {service.image && (
-                <motion.img
-                  src={service.image}
-                  alt={service.title}
-                  className="service-card-image"
-                  style={isBranding ? { position: 'relative', zIndex: 1 } : {}}
-                  initial={isBranding ? { scale: 0, opacity: 0 } : {}}
-                  animate={isBranding ? {
-                    rotate: 360,
-                    scale: [0, 1.1, 1],
-                    opacity: 1
-                  } : {}}
-                  transition={isBranding ? {
-                    rotate: { duration: 40, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 1, delay: 1.2, ease: [0.34, 1.56, 0.64, 1] },
-                    opacity: { duration: 0.5, delay: 1.2 }
-                  } : {}}
-                />
+                <div className={isBranding ? 'branding-img-hover' : ''} style={isBranding ? { position: 'relative', zIndex: 1 } : {}}>
+                  <motion.img
+                    src={service.image}
+                    alt={service.title}
+                    className="service-card-image"
+                    style={isBranding ? { position: 'relative', zIndex: 1 } : {}}
+                    initial={isBranding ? { scale: 0, opacity: 0 } : {}}
+                    animate={isBranding ? {
+                      rotate: 360,
+                      scale: [0, 1.1, 1],
+                      opacity: 1
+                    } : {}}
+                    transition={isBranding ? {
+                      rotate: { duration: 40, repeat: Infinity, ease: "linear" },
+                      scale: { duration: 1, delay: 1.2, ease: [0.34, 1.56, 0.64, 1] },
+                      opacity: { duration: 0.5, delay: 1.2 }
+                    } : {}}
+                  />
+                </div>
               )}
               <p style={service.lava || isBranding ? { position: 'relative', zIndex: 1 } : {}}>{service.desc}</p>
             </div>
@@ -785,22 +864,14 @@ const CEOSection = () => {
   return (
     <div className="ceo-row-card">
       <div className="ceo-info-side">
-        {/* Technical Grid Background */}
-        <div className="ceo-grid-bg"></div>
-
-        {/* Crossing Lines Elements */}
-        <div className="ceo-line-h ceo-line-top"></div>
-        <div className="ceo-line-h ceo-line-bottom"></div>
-        <div className="ceo-line-v ceo-line-left"></div>
-        <div className="ceo-line-v ceo-line-right"></div>
-
         <div className="ceo-content-wrap">
           <span className="ceo-tag">Fundador</span>
           <h2 className="ceo-name">Fabricio Alves</h2>
           <div className="ceo-copy">
             <p>
-              Fundei a GONE® em 2025 e estudo marketing há 6 anos.
-              Nosso foco é transformar sua presença digital em uma máquina de vendas previsível.
+              Fundou a GONE® em 2025, ele entende que marketing não é uma ciência exata, mas a arte de entender pessoas.
+              Trás consigo o proposito de transformar a presença digital dos seus clientes em uma máquina de vendas atrevés de estratégias certas.
+              Com uma visão inovadora e ousada, ele busca constantemente desafiar o status quo e entregar resultados excepcionais para seus clientes.
             </p>
           </div>
         </div>
@@ -879,7 +950,7 @@ const ContactForm = ({ isOpen, onClose }) => {
             <button className="close-btn" onClick={onClose}><X size={24} /></button>
             <div className="form-header">
               <span className="tag">Inicie sua escala hoje</span>
-              <h2>Agendar Consultoria <span>Gratuita</span></h2>
+              <h2>Agendar Consultoria <span style={{ fontFamily: "'DakotaRough', sans-serif", color: '#999' }}>GRaTuiTa</span></h2>
               <p>Preencha os dados abaixo e entraremos em contato em até 24h.</p>
             </div>
             <form onSubmit={handleSubmit}>
@@ -1004,6 +1075,59 @@ const WhatsAppButton = () => {
   );
 };
 
+const TOP_SERVICES = [
+  { icon: <img src="/google-ads-icon.webp" alt="Google Ads" style={{ width: '40px' }} />, title: "Google Ads", desc: "O feijão com arroz que funciona: pare de perder vendas todo dia para o concorrente direto." },
+  { icon: <img src="/meta.png" alt="Meta" style={{ width: '45px' }} />, title: "Meta Ads", desc: "Campanhas inteligentes para salão ou delivery com foco em conversão no cardápio digital." },
+  { icon: <img src="/Google__G__logo.svg.png" alt="Google" style={{ width: '38px' }} />, title: "Google Search", desc: "Otimização técnica para que seu restaurante seja a primeira opção quando alguém busca por onde comer." }
+];
+
+const TopServicesCarousel = () => {
+  const trackRef = React.useRef(null);
+  const x = useMotionValue(0);
+  const isPaused = React.useRef(false);
+  const dragStartX = React.useRef(0);
+
+  useAnimationFrame((_, delta) => {
+    if (isPaused.current || !trackRef.current) return;
+    const halfWidth = trackRef.current.scrollWidth / 2;
+    const next = x.get() - delta * 0.045;
+    x.set(next <= -halfWidth ? next + halfWidth : next);
+  });
+
+  const doubled = [...TOP_SERVICES, ...TOP_SERVICES];
+
+  return (
+    <div className="top-carousel-outer">
+      <motion.div
+        ref={trackRef}
+        className="top-carousel-track"
+        style={{ x }}
+        drag="x"
+        dragElastic={0}
+        dragMomentum={false}
+        onDragStart={() => {
+          isPaused.current = true;
+          dragStartX.current = x.get();
+        }}
+        onDrag={() => {
+          if (x.get() > dragStartX.current) x.set(dragStartX.current);
+        }}
+        onDragEnd={() => { isPaused.current = false; }}
+      >
+        {doubled.map((service, i) => (
+          <div key={i} className="top-carousel-card">
+            <div className="card-inner service-item">
+              <div className="icon">{service.icon}</div>
+              <h3 style={{ fontSize: '1.3rem' }}>{service.title.split(' ')[0]} <span>{service.title.split(' ')[1]}</span></h3>
+              <p style={{ fontSize: '0.95rem' }}>{service.desc}</p>
+            </div>
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
 function App() {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -1092,13 +1216,13 @@ function App() {
           <div className="card-inner hero-bento" style={{
             padding: '5rem 2rem',
             border: 'none',
-            background: '#fff',
+            background: '#E03720',
             position: 'relative',
             overflow: 'hidden'
           }}>
             <DitheringShader
-              colorBack="#ffffff"
-              colorFront="#E03720"
+              colorBack="#E03720"
+              colorFront="#ffffff"
               shape="swirl"
               type="4x4"
               pxSize={2}
@@ -1108,7 +1232,7 @@ function App() {
 
             <div style={{ position: 'relative', zIndex: 10 }}>
               <span className="tag">Assessoria de markerting para restaurantes</span>
-              <h1 style={{ fontSize: '4.2rem' }}>A fila começa no<br /><span>digital.</span></h1>
+              <h1 style={{ fontSize: '4.2rem' }}>A fila começa no<br /><span>DIgITaL.</span></h1>
               <p style={{ fontSize: '1.15rem' }}>
                 Vendemos movimento. Vendemos mesa. Vendemos tranquilidade.
                 Transformamos seu restaurante na principal autoridade do bairro em até 90 dias.
@@ -1117,6 +1241,12 @@ function App() {
                 <button onClick={() => setIsFormOpen(true)} className="btn-bento">Garantir Raio-X Gratuito <ArrowUpRight size={18} /></button>
               </div>
             </div>
+
+            <img
+              src="/bio-bird.png"
+              alt=""
+              className="hero-bird"
+            />
           </div>
         </motion.div>
         <div className="bento-card col-1 empty-card"></div>
@@ -1126,16 +1256,12 @@ function App() {
         <div className="bento-card col-12 desktop-only"><div className="card-inner" style={{ minHeight: '20px' }}></div></div>
         <div className="bento-card col-1 empty-card desktop-only"></div>
 
-        {/* ROW 3: Top 3 Solutions */}
-        <div className="bento-card col-1 empty-card"></div>
-        {[
-          { icon: <img src="/google-ads-icon.webp" alt="Google Ads" style={{ width: '40px' }} />, title: "Google Ads", desc: "O feijão com arroz que funciona: pare de perder vendas todo dia para o concorrente direto." },
-          { icon: <img src="/meta.png" alt="Meta" style={{ width: '45px' }} />, title: "Meta Ads", desc: "Campanhas inteligentes para salão ou delivery com foco em conversão no cardápio digital." },
-          { icon: <img src="/Google__G__logo.svg.png" alt="Google" style={{ width: '38px' }} />, title: "Google Search", desc: "Otimização técnica para que seu restaurante seja a primeira opção quando alguém busca por onde comer." }
-        ].map((service, i) => (
+        {/* ROW 3: Top 3 Solutions — desktop grid */}
+        <div className="bento-card col-1 empty-card desktop-only"></div>
+        {TOP_SERVICES.map((service, i) => (
           <motion.div
             key={i}
-            className="bento-card col-4"
+            className="bento-card col-4 desktop-only"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: i * 0.1 }}
@@ -1148,7 +1274,12 @@ function App() {
             </div>
           </motion.div>
         ))}
-        <div className="bento-card col-1 empty-card"></div>
+        <div className="bento-card col-1 empty-card desktop-only"></div>
+
+        {/* ROW 3: Top 3 Solutions — mobile carousel */}
+        <div className="bento-card col-12 mobile-only" style={{ padding: 0, border: 'none', background: 'transparent' }}>
+          <TopServicesCarousel />
+        </div>
 
         {/* SPACING */}
         <div className="bento-card col-1 empty-card desktop-only"></div>
@@ -1207,10 +1338,10 @@ function App() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <div className="card-inner ifood-feed-section" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
+          <div className="card-inner ifood-feed-section" style={{ paddingTop: '2.5rem', paddingBottom: '5rem', overflow: 'hidden' }}>
             <div className="feed-info-text">
               <span className="tag">Entrega & Performance</span>
-              <h2 className="section-title">O movimento que <br /><span className="highlight">gera lucro.</span></h2>
+              <h2 className="section-title">O movimento que <br /><span className="highlight" style={{ fontFamily: "'DakotaRough', sans-serif" }}>GeRa LuCRo.</span></h2>
               <div className="features-list">
                 <div className="feature-item">
                   <Zap size={20} color="#E03720" className="feature-icon" />
@@ -1299,8 +1430,81 @@ function App() {
               </video>
               <h2 style={{ fontSize: 'clamp(1.3rem, 5vw, 2.5rem)', lineHeight: '1.2', maxWidth: '850px', margin: '0 auto', textWrap: 'balance' }}>
                 Ajustes estratégicos que <br />
-                <span style={{ color: '#E03720' }}>multiplicam seus&nbsp;resultados.</span>
+                <span style={{ color: 'var(--primary)', fontFamily: "'DakotaRough', sans-serif" }}>MuLTiPLiCaM SeuS&nbsp;ReSuLTaDoS.</span>
               </h2>
+
+              {/* Animated Counter */}
+              {(() => {
+                const CounterBlock = () => {
+                  const [count, setCount] = React.useState(100000);
+                  const [started, setStarted] = React.useState(false);
+                  const ref = React.useRef(null);
+
+                  React.useEffect(() => {
+                    const observer = new IntersectionObserver(
+                      ([entry]) => { if (entry.isIntersecting && !started) setStarted(true); },
+                      { threshold: 0.5 }
+                    );
+                    if (ref.current) observer.observe(ref.current);
+                    return () => observer.disconnect();
+                  }, [started]);
+
+                  React.useEffect(() => {
+                    if (!started) return;
+                    const from = 100000, to = 500000, duration = 2200;
+                    const startTime = performance.now();
+                    const tick = (now) => {
+                      const elapsed = now - startTime;
+                      const progress = Math.min(elapsed / duration, 1);
+                      // ease out cubic
+                      const eased = 1 - Math.pow(1 - progress, 3);
+                      setCount(Math.round(from + eased * (to - from)));
+                      if (progress < 1) requestAnimationFrame(tick);
+                    };
+                    requestAnimationFrame(tick);
+                  }, [started]);
+
+                  const progress = Math.round(((count - 100000) / 400000) * 100);
+                  const formatted = count >= 1000
+                    ? (count / 1000).toFixed(count % 1000 === 0 ? 0 : 1) + 'k'
+                    : count.toString();
+
+                  return (
+                    <div ref={ref} style={{ marginTop: '2rem', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                      <div style={{
+                        fontSize: 'clamp(3rem, 10vw, 5.5rem)',
+                        fontWeight: 800,
+                        letterSpacing: '-0.04em',
+                        lineHeight: 1,
+                        fontVariantNumeric: 'tabular-nums',
+                        backgroundImage: 'linear-gradient(to bottom, #E03720 20%, #ffffff 95%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        color: 'transparent'
+                      }}>
+                        <span style={{ fontSize: '0.45em', fontWeight: 700, marginRight: '0.1em' }}>R$</span>{formatted}
+                      </div>
+                      <div style={{ width: 'min(320px, 80vw)', height: '4px', background: 'transparent', borderRadius: '100px', overflow: 'hidden' }}>
+                        <motion.div
+                          style={{
+                            height: '100%',
+                            background: '#E03720',
+                            borderRadius: '100px'
+                          }}
+                          initial={{ width: '0%' }}
+                          animate={{ width: `${progress}%` }}
+                          transition={{ duration: 0.05 }}
+                        />
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: '#E03720', fontWeight: 500 }}>
+                        de R$100k → R$500k
+                      </div>
+                    </div>
+                  );
+                };
+                return <CounterBlock />;
+              })()}
             </div>
             {false && (
               <div style={{ minHeight: '400px', position: 'relative', marginTop: '2rem' }}>
@@ -1357,7 +1561,7 @@ function App() {
           <div className="card-inner">
             <span className="tag">Os 4 pilares da Gone®</span>
             <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: '#111' }}>Além do post.<br />Focamos em Pessoas.</h2>
-            <p style={{ fontSize: '1rem', marginBottom: '1rem' }}>Nossa metodologia é testada e aprovada pelo mercado de gastronomia.</p>
+            <p style={{ fontSize: '1rem', marginBottom: '1rem' }}>Nossa metodologia é testada e aprovada pelo mercado de food service.</p>
             <div className="pilar-list">
               <li><CheckCircle2 color="#E03720" size={18} /> Conteúdo que desperta fome.</li>
               <li><CheckCircle2 color="#E03720" size={18} /> Identidade Visual Premium.</li>
