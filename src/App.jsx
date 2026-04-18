@@ -652,8 +652,8 @@ const CartAnimationBadge = () => {
     <div className="cart-badge-container">
       <div className="cart-badge-item">
         <div className="item-info">
-          <span className="name">Double Cheese Burger</span>
-          <span className="price">R$ 38,90</span>
+          <span className="name">Tênis Running Pro</span>
+          <span className="price">R$ 249,90</span>
         </div>
         <motion.button
           className="add-btn"
